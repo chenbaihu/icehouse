@@ -1,0 +1,8 @@
+#---------------------------------------------
+# RabbitMQ Service
+#---------------------------------------------
+
+RABBITMQ_HOST=192.168.111.1
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=rabbit_password
+

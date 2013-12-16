@@ -1,0 +1,43 @@
+#---------------------------------------------
+# PIP HOST: python package source.
+#---------------------------------------------
+
+PIP_HOST=10.239.82.93
+
+#---------------------------------------------
+# Set up Env.
+#---------------------------------------------
+
+MYSQL_ROOT_PASSWORD=mysqlpassword
+MYSQL_HOST=10.239.82.93
+
+#---------------------------------------------
+# RabbitMQ Service
+#---------------------------------------------
+
+RABBITMQ_HOST=10.239.82.93
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=rabbit_password
+
+#---------------------------------------------
+# Keystone
+#---------------------------------------------
+
+MYSQL_KEYSTONE_USER=keystone
+MYSQL_KEYSTONE_PASSWORD=keystone_password
+KEYSTONE_HOST=10.239.82.93
+ADMIN_PASSWORD=nova
+ADMIN_TOKEN=admin_token
+SERVICE_TOKEN=$ADMIN_TOKEN
+ADMIN_USER=admin
+SERVICE_TENANT_NAME=service
+
+#---------------------------------------------
+# Swift Service
+#---------------------------------------------
+
+SWIFT_HOST=10.239.82.93
+SWIFT_NODE_IP={10.239.82.93,10.239.82.96,10.239.82.99,10.239.82.90,10.239.82.111}
+KEYSTONE_SWIFT_SERVICE_PASSWORD=keystone_swift_password
+SWIFT_DISK_PATH=/dev/sdc
+SWIFT_NODE_NIC_CARD=eth0
