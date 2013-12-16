@@ -1,4 +1,6 @@
 #!/bin/bash
+#set -o xtrace
+
 TOPDIR=$(cd $(dirname "$0") && pwd)
 sed -i '/^ *$/d' $TOPDIR/localrc
 
@@ -90,9 +92,11 @@ cat <<"EOF" > $script_file
     rm -rf /root/.ssh
     ssh-keygen
 EOF
-    sed -i "s,%this_host%,$this_host,g" $script_file
     _copy_and_run_script $server_ip $server_password $script_file
-    _auto_cmd $server_password "scp -pr /root/.ssh/id_rsa.pub $this_host:/tmp/$server_ip"
+
+    from="$server_ip:/root/.ssh/id_rsa.pub"
+    to="/tmp/$server_ip"
+    _auto_cmd $server_password "scp -pr $from $to"
 }
 
 function configure_host_name() {
@@ -191,3 +195,5 @@ function main() {
 }
 
 main
+
+#set +o xtrace
