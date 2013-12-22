@@ -86,7 +86,7 @@ case "$1" in
     stop)
         if [[ $is_running -gt 0 ]]; then
             echo "begin to stop swift-proxy"
-            nkill swift-proxy >/dev/null 2>&1 &
+            nkill swift-proxy >/dev/null 2>&1 
         else
             echo "swift-proxy is stopped"
         fi

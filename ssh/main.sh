@@ -2,6 +2,7 @@
 #set -o xtrace
 
 TOPDIR=$(cd $(dirname "$0") && pwd)
+sed -i '/^$/d' $TOPDIR/localrc
 sed -i '/^ *$/d' $TOPDIR/localrc
 
 function _gen_template() {
@@ -163,9 +164,6 @@ EOF
 
         run_remote_cmd $remote_host_ip $remote_password "chmod +x /tmp/init_ssh.sh"
         run_remote_cmd $remote_host_ip $remote_password "/tmp/init_ssh.sh"
-        #run_remote_cmd $remote_host_ip $remote_password "rm -rf /tmp/localrc"
-        #run_remote_cmd $remote_host_ip $remote_password "rm -rf /tmp/init_ssh.sh"
-        #run_remote_cmd $remote_host_ip $remote_password "rm -rf /tmp/exp.sh"
     done
  
 }

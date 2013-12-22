@@ -24,9 +24,7 @@ set_password MYSQL_ROOT_PASSWORD
 # Install mysql by apt-get
 #---------------------------------------------
 
-DEBIAN_FRONTEND=noninteractive \
-apt-get --option "Dpkg::Options::=--force-confold" --assume-yes \
-install -y --force-yes openssh-server mysql-server
+apt_get openssh-server mysql-server
 
 #---------------------------------------------
 # Set root's password
@@ -42,13 +40,12 @@ service mysql restart
 #---------------------------------------------
 # Give root's right
 #---------------------------------------------
-mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e "use mysql; delete from user where user=''; flush privileges;"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD  -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'  WITH GRANT OPTION; FLUSH PRIVILEGES;"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD -e  "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'  WITH GRANT OPTION; FLUSH PRIVILEGES;"
-mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "flush privileges;"
-
+mysql_local_root_cmd "use mysql; delete from user where user=''; flush privileges;"
+mysql_local_root_cmd "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
+mysql_local_root_cmd "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'  WITH GRANT OPTION; FLUSH PRIVILEGES;"
+mysql_local_root_cmd "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES;"
+mysql_local_root_cmd "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD'  WITH GRANT OPTION; FLUSH PRIVILEGES;"
+mysql_local_root_cmd "flush privileges;"
 service mysql restart
 
 set +o xtrace

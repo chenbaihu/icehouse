@@ -36,6 +36,21 @@ function mysql_cmd() {
     set -o xtrace
 }
 
+
+function mysql_local_root_cmd() {
+    set +o xtrace
+    mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "$@"
+    set -o xtrace
+}
+
+function apt_get() {
+    set +o xtrace
+    DEBIAN_FRONTEND=noninteractive \
+    apt-get --option "Dpkg::Options::=--force-confold" --assume-yes \
+    install -y --force-yes $@
+    set -o xtrace
+}
+
 function source_install() {
     olddir=`pwd`
     cd $DEST/$1

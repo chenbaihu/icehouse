@@ -15,12 +15,18 @@ source $TOPDIR/localrc
 source $TOPDIR/tools/function
 DEST=/opt/stack/
 
+apt_get python-virtualenv
+cp -rf $TOPDIR/tools/nkill /usr/bin/
+chmod +x /usr/bin/nkill
+setup_iptables
+
+
 mkdir -p $DEST
 if [[ ! -e $DEST/.swift ]]; then
     old_path=`pwd`
     cd $DEST
     virtualenv .swift
-    cd .keystone/bin/
+    cd .swift/bin/
     source activate
     cd $old_path
 else
@@ -85,14 +91,11 @@ SERVICE_ENDPOINT=http://$KEYSTONE_HOST:35357/v2.0
 # Clear Front installation
 #---------------------------------------------------
 
-DEBIAN_FRONTEND=noninteractive \
-apt-get --option \
-"Dpkg::Options::=--force-confold" --assume-yes \
-install -y --force-yes mysql-client openssh-server build-essential git \
+apt_get mysql-client openssh-server build-essential git \
 curl gcc git git-core libxml2-dev libxslt-dev \
 memcached openssl expect mysql-client unzip \
 memcached python-dev python-setuptools python-pip \
-sqlite3 xfsprogs libmysqld-dev
+sqlite3 xfsprogs libmysqld-dev python-virtualenv
 
 [[ -e /usr/include/libxml ]] && rm -rf /usr/include/libxml
 ln -s /usr/include/libxml2/libxml /usr/include/libxml
@@ -107,6 +110,10 @@ nkill swift-object
 # Copy source code to DEST Dir
 #---------------------------------------------------
 
+sed -i "/MySQL/d" $TOPDIR/source/keystone/requirements.txt
+echo "MySQL-python" >> $TOPDIR/source/keystone/requirements.txt
+sed -i "/pbr/d" $TOPDIR/source/swift/requirements.txt
+echo "pbr>=0.5.21,<1.0" >> $TOPDIR/source/swift/requirements.txt
 install_swift
 install_keystone
 
@@ -325,6 +332,21 @@ mkdir -p /var/log/swift
 chown -R swift /var/log/swift
 mkdir -p /var/cache/swift/
 chown -R swift /var/cache/swift/
+
+cp -rf $TOPDIR/templates/service /etc/init.d/swift-storage
+SWIFT_DIR=$DEST/swift
+file=/etc/init.d/swift-storage
+
+sed -i "s,%KEYSTONE_SERVICE_USER_NAME%,swift,g" $file
+sed -i "s,%KEYSTONE_SERVICE_PASSWORD%,$KEYSTONE_SWIFT_SERVICE_PASSWORD,g" $file
+sed -i "s,%KEYSTONE_HOST%,$KEYSTONE_HOST,g" $file
+
+sed -i "s,%logfile%,$logfile,g" $file
+sed -i "s,%SWIFT_DIR%,$SWIFT_DIR,g" $file
+sed -i "s,%DEST%,$DEST,g" $file
+sed -i "s,%logfile%,$logfile,g" $file
+sed -i "s,%VIR_DIR%,$VIR_DIR,g" $file
+
 
 cat << "EOF" > /root/swift-storage.sh
 #!/bin/bash

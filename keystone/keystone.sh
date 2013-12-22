@@ -13,7 +13,6 @@ source $TOPDIR/localrc
 source $TOPDIR/tools/function
 DEST=/opt/stack/
 mkdir -p $DEST
-
 if [[ ! -e $DEST/.keystone ]]; then
     old_path=`pwd`
     cd $DEST
@@ -65,10 +64,7 @@ mkdir -p /var/log/keystone
 # Clear Front installation
 #---------------------------------------------------
 
-DEBIAN_FRONTEND=noninteractive \
-apt-get --option \
-"Dpkg::Options::=--force-confold" --assume-yes \
-install -y --force-yes openssh-server build-essential git \
+apt_get openssh-server build-essential git \
 python-dev python-setuptools python-pip \
 libxml2-dev libxslt-dev unzip mysql-client \
 libmysqld-dev mysql-client

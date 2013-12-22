@@ -1,4 +1,4 @@
 http_proxy="http://10.239.120.37:911"
 https_proxy=$http_proxy
 ftp_proxy=$http_proxy
-FILE_LIST=../swift/source/swift/requirements.txt
+FILE_LIST=../nova/source/nova/requirements.txt

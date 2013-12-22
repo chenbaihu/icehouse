@@ -6,6 +6,7 @@ set -o xtrace
 # Create ch.sh
 #---------------------------------------------------
 
+
 cat <<"EOF"> /tmp/ch.sh
 #!/bin/bash
 rm -rf *type
@@ -23,6 +24,10 @@ chmod +x /tmp/ch.sh
 
 TOPDIR=$(cd $(dirname "$0") && pwd)
 source $TOPDIR/localrc
+export http_proxy=$http_proxy
+export https_proxy=$http_proxy
+export ftp_proxy=$http_proxy
+
 TEMP=`mktemp`; rm -rfv $TEMP >/dev/null;mkdir -p $TEMP;
 
 #---------------------------------------------------
